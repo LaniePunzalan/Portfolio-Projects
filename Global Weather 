@@ -1,0 +1,44 @@
+SELECT * FROM GlobalWeather
+
+ALTER TABLE GlobalWeather 
+ADD Date Date;
+
+UPDATE GlobalWeather SET Date = convert(date, last_updated)
+
+ALTER table GlobalWeather
+DROP COLUMN last_updated
+
+with Types_of_Temperature (Country, Location_name, Date, Temperature_celsius, Types_of_Temperature)
+as (SELECT Country, location_name, Date, Temperature_celsius,
+case 
+    when temperature_celsius >=30 then 'Hot Temperature'
+    when temperature_celsius >=20 then 'Tropical Temperature'
+    when temperature_celsius <20 then 'Cold Temperature'
+    end as 'Types_of_Temperature'
+from GlobalWeather)
+--- where Date = '2023-10-13'
+--- order by 4 
+
+
+select * from Types_of_Temperature
+order by Date desc, Temperature_celsius desc
+
+SELECT Condition_text, count(condition_text) as Total FROM GlobalWeather
+GROUP by condition_text 
+ORDER by Total desc
+
+SELECT Country, Location_name, Condition_text from GlobalWeather
+Group By country, location_name, condition_text
+ORDER BY condition_text
+
+SELECT Country, Location_name, Date, Sunrise, Sunset, Moonrise, Moonset FROM GlobalWeather
+--- where country = 'Philippines'
+ORDER BY 4, 5, 6, 7
+
+SELECT Country, Date, Humidity FROM GlobalWeather
+--- WHERE country = 'Canada'
+ORDER BY 3 desc
+
+
+
+
